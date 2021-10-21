@@ -1,4 +1,4 @@
-// Adiciona os modulos instalados
+// Import the needed modules
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
@@ -7,10 +7,18 @@ const concat = require("gulp-concat");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 
-// Funçao para compilar o SASS e adicionar os prefixos
-function compilaSass() {
+// Function to compile html
+function compileHtml() {
   return gulp
-    .src("css/scss/**/*.scss")
+    .src("./html/**/*.html")
+    .pipe(gulp.dest('./build'))
+    .pipe(browserSync.stream());
+}
+
+// Function to compile sass and add css prefixes
+function compileSass() {
+  return gulp
+    .src("scss/**/*.scss")
     .pipe(
       sass({
         outputStyle: "compressed",
@@ -22,58 +30,60 @@ function compilaSass() {
         cascade: false,
       })
     )
-    .pipe(gulp.dest("css/"))
+    .pipe(gulp.dest("./build"))
     .pipe(browserSync.stream());
 }
 
-// Função para juntar o JS
+// Function to concatenate js files
 function gulpJS() {
   return gulp
-    .src("js/modules/*.js")
-    .pipe(concat("main.js"))
+    .src("js/**/*.js")
+    .pipe(concat("index.js"))
     .pipe(
       babel({
         presets: ["env"],
       })
     )
     .pipe(uglify())
-    .pipe(gulp.dest("js/"))
+    .pipe(gulp.dest("./build"))
     .pipe(browserSync.stream());
 }
 
-// JS Plugins
-// function pluginJS() {
-//   return gulp
-//   .src([
-//     'node_modules/jquery/dist/jquery.min.js',
-//     'node_modules/moment/min/moment.min.js',
-//     'js/plugins/*.js'
-//   ])
-//   .pipe(concat('plugins.js'))
-//   .pipe(gulp.dest('js/'))
-//   .pipe(browserSync.stream())
-// }
-
-// Função para iniciar o browser
+// Function to init browser
 function browser() {
   browserSync.init({
     server: {
-      baseDir: "./",
+      baseDir: "./build",
     },
   });
 }
 
-// Função de watch do Gulp
+// Set gulp to watch this files
 function watch() {
-  gulp.watch("css/scss/*.scss", compilaSass);
-  gulp.watch("js/modules/*.js", gulpJS);
+  gulp.watch("html/**/*.html", compileHtml);
+  gulp.watch("scss/**/*.scss", compileSass);
+  gulp.watch("js/**/*.js", gulpJS);
   // gulp.watch('js/plugins/*.js', pluginJS);
   gulp.watch(["*.html"]).on("change", browserSync.reload);
 }
 
-// Tarefa padrão do Gulp, que inicia o watch e o browser-sync
-exports.compilaSass = compilaSass;
+// Gulp tasks config
+exports.compileHtml = compileHtml;
+exports.compileSass = compileSass;
 exports.gulpJS = gulpJS;
 exports.browser = browser;
 exports.watch = watch;
-exports.default = gulp.parallel(watch, browser, compilaSass, gulpJS);
+
+exports.dev = gulp.parallel(
+  compileHtml,
+  compileSass,
+  gulpJS,
+  watch,
+  browser,
+);
+
+exports.build = gulp.parallel(
+  compileHtml,
+  compileSass,
+  gulpJS,
+)
