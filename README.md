@@ -32,6 +32,7 @@ To concatenate external scripts, in gulpJs function, you can change the string `
 If you can, give me your feedback. This is very important for the project and for me. Feel free to open issues and send pull requests.
 
 ##
-
-<img align="center" alt="Node" title="Node" height="60" width="80" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/gulp/gulp-plain.svg">
-<img align="center" alt="Node" title="Node" height="60" width="80" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg">
+<div style="display: flex">
+  <img align="center" alt="Node" title="Node" height="60" width="80" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/gulp/gulp-plain.svg">
+  <img align="center" alt="Node" title="Node" height="60" width="80" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg">
+</div>
